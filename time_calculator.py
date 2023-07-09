@@ -1,126 +1,62 @@
-def add_time(start, duration,days=""):
+def add_time(start,duration, days=""):
 
-    #getting the starting and ending time
-    start_time = start.replace("PM","").replace("AM","").strip().split(":")
-    end_time = duration.split(":")
-    zones = ["AM","PM"]
-    new_time =''
-    #check the number of days
+    #geting the hours, minutes and AM/PM from start time
+    general_start_time = start.split(":")
+    start_time_hour = int(general_start_time[0])
+    start_time_minute =int(general_start_time[1].split()[0])
+    am_or_pm = (general_start_time[1].split()[1])
+
+    #geting the minute, hours from the duration
+    general_duration_time = duration.split(":")
+    duration_hour = int(general_duration_time[0])
+    duration_minute = int(general_duration_time[1])
+
+    #converting start time into minutes
+    start_hour = start_time_hour * 60 + start_time_minute
+
+    #converting duraation time into  minutes
+    star_duration = duration_hour * 60 + duration_minute
+
+    #geting the total hour and minute
+    hour = (start_hour + star_duration)//60
+    minute = (star_duration + start_hour) % 60
+
+    #getting the Am/Pm, number of days and the actual hour 
+    period = am_or_pm
+    number_of_days = round(hour/24)
+    hour = hour % 24
+
+    #coding the main logic of the project
     
-    #adding the hours
-    hour = int(start_time[0]) + int(end_time[0])
+    # if hour < 1 and minute < 59:
+    #     period = "PM" if period == "AM" else "AM"
 
-    #adding the minutes
-    minute = int(start_time[1]) + int(end_time[1])
-    for zone in zones:
-        num_days = ""
-        num = ""
-        if num_days:
-            if num_days ==1:
-                num = f"(next day)"
-            elif num_days >1:
-                num = f"({num_days} days later)"
-        if zone in start:
-            #building the 12 hour clock
-            if hour ==0 and minute <=59:
-                if days =="":
-                    new_time += f"{hour + 12}:{minute} {zones[0]}"
-                else:
-                    new_time += f"{hour + 12}:{minute} {zones[0]}, {days.capitalize()}"
+    if hour <12:
+        period = "PM" if period == "PM" else "AM"
 
-            elif hour >= 1 and hour <=11 and minute <=59:
-                if days == "":
-                    if minute <10:
-                        new_time += f"{hour}:{minute:02d} {zone}"
-                    else:
-                        new_time += f"{hour}:{minute} {zones[1]}"
-                else:
-                    if minute <10:
-                        new_time += f"{hour}:{minute:02d} {zone}"
-                    else:
-                        new_time += f"{hour}:{minute} {zones[1]}, {days.capitalize()}"
-                    
-            elif hour <=1 or hour >= 11 and minute ==0:
-                if days =="":
-                    new_time += f"{hour}:{minute} {zones[0]}"
-                else:
-                    new_time += f"{hour}:{minute} {zones[0]}, {days.capitalize()}"
-        
-            elif hour ==1 or (hour <=11 and minute > 59):
-                minute_to_hour = minute/60 #getting hour from minutes
-                new_minute = round(minute_to_hour -1,2) #getting new minute in two decimal
-                add_hr = str(float(hour)+minute_to_hour).split(".") #adding the hours to get complete hours
-                new_minute = round(float(new_minute)*60)
-                if days == "":
-                    if new_minute <10:
-                        new_time +=f"{add_hr[0]}:{new_minute:02d} {zones[1]}"
-                    else:
-                        new_time +=f"{add_hr[0]}:{new_minute} {zones[0]}"
-                else:
-                    if new_minute <10:
-                        new_time +=f"{add_hr[0]}:{new_minute:02d} {zones[1]}, {days.capitalize()}"
-                    else:
-                        new_time +=f"{add_hr[0]}:{new_minute} {zones[0]}, {days.capitalize()}"
+    elif hour ==12:
+        period = "PM" if period == "AM" else "AM"
+    
+    elif hour >=13:
+        hour -= 12
+        period = "PM" if period == "AM" else "AM"
+        print("NUMBER OF DAYS = ",number_of_days)
 
 
-            elif hour ==12 and 0 <= minute <= 59:
-                if days =="":
-                    new_time += f"{hour}:{minute} {zones[1]}"
-                else:
-                    new_time += f"{hour}:{minute} {zones[1]}, {days.capitalize()}"
-                
-            elif hour ==13 and (hour <=23 and minute <= 59):
-                num_days = round(int(hour)/24)
-                if days == "" and num_days>0 or num_days==1:
-                    new_time += f"{hour -12}:{minute} {zones[1]} {num}"
-                else:
-                    new_time += f"{hour -12}:{minute} {zones[1]}, {days.capitalize()} {num}"
 
-            elif hour ==13 or (hour <=23 and minute >59):
-                minute_to_hour = minute/60 #getting hour from minutes
-                new_minute = round(minute_to_hour -1,2) #getting new minute in two decimal
-                new_hour = hour + new_minute
-                add_hr = str(float(new_hour-12)+minute_to_hour).split(".") #adding the hours to get complete hours
-                new_minute = round(float(new_minute)*60)
-                if days == "":
-                    if new_minute <10:
-                        new_time +=f"{add_hr[0]}:{new_minute:02d} {zones[1]} {num} "
-                    else:
-                        new_time +=f"{add_hr[0]}:{new_minute} {zones[0]} {num}"
-                else:
-                    if new_minute <10:
-                        new_time +=f"{add_hr[0]}:{new_minute:02d} {zones[1]}, {days.capitalize()} {num}"
-                    else:
-                        new_time +=f"{add_hr[0]}:{new_minute} {zones[0]}, {days.capitalize()} {num}"
+    new_time = f"{hour}:{minute:02d} {period}"
 
-            elif hour >= 24 and minute > 59:
-                minute_to_hour = minute/60 #getting hour from minutes
-                new_minute = round(minute_to_hour -1,2) #getting new minute in two decimal
-                new_hour = hour -24 #getting my new hours
-                add_hr = str(float(new_hour)+minute_to_hour).split(".") #adding the hours to get complete hours
-                new_minute = round(float(new_minute)*60)
+    #geting the days
+    if number_of_days:
+        days = days.lower().capitalize()
+        if number_of_days ==1:
+            new_time +=f", {days} (next day)"
+        elif number_of_days > 1:
+            new_time +=f", {days} ({number_of_days} days later)"
 
-                #checking for the number of days
-                num_days = round(int(hour+minute_to_hour)/24)
-
-                if days == "" and num_days==1 or num_days>2:
-                    if new_minute <10:
-                        new_time +=f"{add_hr[0]}:{new_minute:02d} {zones[0]} {num}"
-                    else:
-                        new_time +=f"{add_hr[0]}:{new_minute} {zones[1]} {num}"
-                else:
-                    if new_minute <10:
-                        new_time +=f"{add_hr[0]}:{new_minute:02d} {zones[0]}, {days.capitalize()} {num}"
-                    else:
-                        new_time +=f"{add_hr[0]}:{new_minute} {zones[1]}, {days.capitalize()} {num}"
-
-        
-                print(num_days)
-
-                print("Days ", num)
+    
     return new_time
 
-
-p = add_time("10:10 PM", "3:30")
+p = add_time("11:30 AM", "2:32", "Monday")
 
 print(p)
