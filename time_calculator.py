@@ -1,4 +1,4 @@
-def add_time(start,duration, days=""):
+def add_time(start,duration, days=None):
 
     #geting the hours, minutes and AM/PM from start time
     general_start_time = start.split(":")
@@ -21,42 +21,53 @@ def add_time(start,duration, days=""):
     hour = (start_hour + star_duration)//60
     minute = (star_duration + start_hour) % 60
 
+
     #getting the Am/Pm, number of days and the actual hour 
     period = am_or_pm
     number_of_days = round(hour/24)
     hour = hour % 24
-
-    #coding the main logic of the project
     
-    # if hour < 1 and minute < 59:
-    #     period = "PM" if period == "AM" else "AM"
+  
 
+    #getting the number of weeks
+    number_of_weeks = number_of_days // 7
+   
+    #getting the clock logic for 24 hours
     if hour <12:
         period = "PM" if period == "PM" else "AM"
 
     elif hour ==12:
         period = "PM" if period == "AM" else "AM"
-    
+        
     elif hour >=13:
         hour -= 12
         period = "PM" if period == "AM" else "AM"
-        print("NUMBER OF DAYS = ",number_of_days)
-
-
 
     new_time = f"{hour}:{minute:02d} {period}"
 
-    #geting the days
-    if number_of_days:
-        days = days.lower().capitalize()
-        if number_of_days ==1:
-            new_time +=f", {days} (next day)"
-        elif number_of_days > 1:
-            new_time +=f", {days} ({number_of_days} days later)"
+    if days==None:
+        if number_of_days ==0:
+            return new_time
+        elif number_of_days ==1:
+           new_time +=f" (next day)"
+        else:
+            new_time +=f" ({number_of_days} days later)"
+    else:
+        days_of_week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
-    
+        start_day_index = days_of_week.index(days.capitalize())
+        new_day_index = (start_day_index + number_of_days) % 7
+        new_day = days_of_week[new_day_index]
+
+        if number_of_days ==0:
+            new_time +=f", {new_day}"
+        elif number_of_days ==1:
+            new_time +=f", {new_day} (next day)"
+        else:
+            new_time +=f", {new_day} ({number_of_days} days later)"
     return new_time
 
-p = add_time("11:30 AM", "2:32", "Monday")
+
+p = add_time("11:55 AM", "3:12")
 
 print(p)
