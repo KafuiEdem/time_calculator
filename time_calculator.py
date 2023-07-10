@@ -21,16 +21,12 @@ def add_time(start,duration, days=None):
     hour = (start_hour + star_duration)//60
     minute = (star_duration + start_hour) % 60
 
-
     #getting the Am/Pm, number of days and the actual hour 
     period = am_or_pm
     number_of_days = round(hour/24)
     hour = hour % 24
+    check_day = hour//24
     
-  
-
-    #getting the number of weeks
-    number_of_weeks = number_of_days // 7
    
     #getting the clock logic for 24 hours
     if hour <12:
@@ -47,7 +43,7 @@ def add_time(start,duration, days=None):
 
     if days==None:
         if number_of_days ==0:
-            return new_time
+            new_time
         elif number_of_days ==1:
            new_time +=f" (next day)"
         else:
@@ -68,6 +64,6 @@ def add_time(start,duration, days=None):
     return new_time
 
 
-p = add_time("11:55 AM", "3:12")
+p = add_time("11:59 PM", "24:05", "Wednesday")
 
 print(p)
