@@ -38,4 +38,18 @@ your convenience. The tests will run automatically whenever you hit the "run" bu
 
 ## Resource <br>
 `This resource will help you calculate the time`
-<https://www.freecodecamp.org/news/mathematics-converting-am-pm-to-24-hour-clock/#:~:text=Converting%20from%20a%2024%20Hour,%3A55%20%3D%2012%3A55%20AM>
+<https://www.freecodecamp.org/news/mathematics-converting-am-pm-to-24-hour-clock/#:~:text=Converting%20from%20a%2024%20Hour,%3A55%20%3D%2012%3A55%20AM><br>
+
+
+## Note from Me
+
+This project is very tricky, and it takes time to analyze it well.
+I thought it was easy, but it took me days to figure out the issue with my code.
+I was able to write the code without any problems, except for the logic to handle next day.
+Out of 12 test, 11 passed and 1 was an issue. It took me two days to figure it out.
+
+## Test Passed
+
+All the test passed.
+
+![Question output](time_cal.png) <br>

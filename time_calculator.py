@@ -52,6 +52,7 @@ def add_time(start,duration, days=None):
     
     new_time = f"{hour}:{minute:02d} {period}"
 
+    #checking the days and updating the final touch of my code.
     if days==None:
         if number_of_days ==0:
             new_time
