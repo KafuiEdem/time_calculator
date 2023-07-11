@@ -11,34 +11,45 @@ def add_time(start,duration, days=None):
     duration_hour = int(general_duration_time[0])
     duration_minute = int(general_duration_time[1])
 
+    #constants
+    MINUTE_DAY = 24*60
+
+    #checking for time provided and convert it into 24 hours
+    if am_or_pm=="PM":
+        start_time_hour +=12
+
     #converting start time into minutes
-    start_hour = start_time_hour * 60 + start_time_minute
+    start_hour_in_minute = start_time_hour * 60 + start_time_minute 
 
     #converting duraation time into  minutes
-    star_duration = duration_hour * 60 + duration_minute
+    start_duration_in_minute = duration_hour * 60 + duration_minute
 
-    #geting the total hour and minute
-    hour = (start_hour + star_duration)//60
-    minute = (star_duration + start_hour) % 60
+    #geting the total time in minute
+    total_time_in_minute = start_hour_in_minute + start_duration_in_minute
+    
+    #getting the number of days
+    number_of_days = total_time_in_minute//MINUTE_DAY
+
+    #getting the actual hours and minute
+    minute_left = total_time_in_minute % MINUTE_DAY
+    hour = minute_left // 60
+    minute = minute_left % 60
+    period = am_or_pm
 
     #getting the Am/Pm, number of days and the actual hour 
-    period = am_or_pm
-    number_of_days = round(hour/24)
-    hour = hour % 24
-    check_day = hour//24
-    
-   
-    #getting the clock logic for 24 hours
-    if hour <12:
-        period = "PM" if period == "PM" else "AM"
 
-    elif hour ==12:
-        period = "PM" if period == "AM" else "AM"
+    if hour < 12:
+         if hour ==0:
+             hour +=12
+         period = "AM" 
         
-    elif hour >=13:
-        hour -= 12
-        period = "PM" if period == "AM" else "AM"
+    elif hour ==12:
+        period = "PM" 
 
+    elif hour >=13:
+        hour -=12
+        period = "PM" 
+    
     new_time = f"{hour}:{minute:02d} {period}"
 
     if days==None:
@@ -62,8 +73,4 @@ def add_time(start,duration, days=None):
         else:
             new_time +=f", {new_day} ({number_of_days} days later)"
     return new_time
-
-
-p = add_time("11:59 PM", "24:05", "Wednesday")
-
-print(p)
+   
